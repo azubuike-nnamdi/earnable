@@ -1,0 +1,21 @@
+#!/bin/sh
+
+echo "🔍 Running post-merge hook..."
+
+# Check for package.json changes after merge
+changed_files="$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD 2>/dev/null)"
+
+if echo "$changed_files" | grep -q "package.json"; then
+  echo "📦 Dependencies changed. Running bun install..."
+  bun install
+fi
+
+# Run build
+echo "🏗️ Running build..."
+bun run build
+
+if [ $? -ne 0 ]; then
+  echo "⚠️ Build failed after merge. Please check your code."
+fi
+
+echo "✅ Post-merge actions completed."

@@ -1,0 +1,26 @@
+#!/bin/sh
+
+echo "🔍 Running pre-push hook..."
+
+files_changed=$(git diff --name-only origin/main...HEAD 2>/dev/null)
+
+# Install dependencies if package.json changed
+if echo "$files_changed" | grep -q "package.json"; then
+  echo "📦 Dependencies changed. Running bun install..."
+  bun install || exit 1
+fi
+
+# Run lint
+echo "🧹 Running lint..."
+bun run lint || exit 1
+
+# Run type check
+echo "🔎 Running type check..."
+bun run type-check || exit 1
+
+# Run build
+echo "🏗️ Running build..."
+bun run build || exit 1
+
+echo "✅ All checks passed. Proceeding with push."
+exit 0
