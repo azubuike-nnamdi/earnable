@@ -1,7 +1,5 @@
-export default function Page() {
-  return (
-    <div>
-      <h1>Sign In</h1>
-    </div>
-  );
+import { SignIn } from "@/components/auth/sign-in";
+
+export default function SignInPage() {
+  return <SignIn />;
 }
