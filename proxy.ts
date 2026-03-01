@@ -10,7 +10,7 @@ export default async function proxy(req: NextRequest) {
 
 
   const isAuthenticated = true
-  const token = null
+  // const token = null
 
   // 🔄 If user is authenticated and trying to access auth routes, redirect to dashboard
   if (isAuthenticated && isAuthRoute) {

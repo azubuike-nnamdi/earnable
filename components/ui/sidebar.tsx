@@ -65,10 +65,12 @@ export function Sidebar() {
               {accounts.map((account, i) => (
                 <div key={i} className="flex items-center justify-between group">
                   <div className="flex items-center gap-3">
-                    <img
+                    <Image
                       src={`https://i.pravatar.cc/150?u=${account.name}`}
                       alt={account.name}
                       className="w-7 h-7 rounded-full bg-gray-800 object-cover border border-white/5"
+                      height={50}
+                      width={50}
                     />
                     <span className="text-[14px] text-gray-300 group-hover:text-white transition-colors">
                       {account.name}
