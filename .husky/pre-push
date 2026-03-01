@@ -2,25 +2,43 @@
 
 echo "🔍 Running pre-push hook..."
 
-files_changed=$(git diff --name-only origin/main...HEAD 2>/dev/null)
+# Exit immediately if a command exits with non-zero status
+set -e
 
-# Install dependencies if package.json changed
-if echo "$files_changed" | grep -q "package.json"; then
-  echo "📦 Dependencies changed. Running bun install..."
-  bun install || exit 1
+# Get current branch name safely
+current_branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD)
+
+echo "📌 Current branch: $current_branch"
+
+# Fetch remote safely (do not fail if branch doesn't exist yet)
+git fetch origin "$current_branch" >/dev/null 2>&1 || true
+
+# Detect changed files safely
+if git show-ref --verify --quiet "refs/remotes/origin/$current_branch"; then
+  echo "🔎 Comparing with origin/$current_branch..."
+  files_changed=$(git diff --name-only "origin/$current_branch...HEAD")
+else
+  echo "🆕 First push detected. Skipping remote comparison."
+  files_changed=$(git diff --name-only HEAD)
+fi
+
+# Install dependencies only if needed
+if echo "$files_changed" | grep -qE "(package.json|bun.lockb)"; then
+  echo "📦 Dependencies changed. Installing..."
+  bun install
 fi
 
 # Run lint
 echo "🧹 Running lint..."
-bun run lint || exit 1
+bun run lint
 
 # Run type check
 echo "🔎 Running type check..."
-bun run type-check || exit 1
+bun run type-check
 
 # Run build
 echo "🏗️ Running build..."
-bun run build || exit 1
+bun run build
 
-echo "✅ All checks passed. Proceeding with push."
+echo "✅ All checks passed. Push allowed."
 exit 0
