@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import { Link as LinkIcon, X, Menu, ChevronRight, User } from "lucide-react"
+import { ProfileDialog } from "@/components/profile/profile-dialog"
 
 export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -86,15 +87,17 @@ export function Sidebar() {
 
           {/* open profile dialog */}
           <div className="mt-auto pt-6">
-            <button className="flex items-center w-full p-3 rounded-2xl bg-[#1e151b]/80 border border-white/5 hover:bg-white/10 transition-colors group cursor-pointer">
-              <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div className="shrink-0 w-9 h-9 rounded-full bg-gray-600 flex items-center justify-center overflow-hidden border border-white/10">
-                  <User className="w-5 h-5 text-gray-300" strokeWidth={1.5} />
+            <ProfileDialog>
+              <button className="flex items-center w-full p-3 rounded-2xl bg-[#1e151b]/80 border border-white/5 hover:bg-white/10 transition-colors group cursor-pointer">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <div className="shrink-0 w-9 h-9 rounded-full bg-gray-600 flex items-center justify-center overflow-hidden border border-white/10">
+                    <User className="w-5 h-5 text-gray-300" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-[14px] font-medium text-white truncate">Chike Opara</span>
                 </div>
-                <span className="text-[14px] font-medium text-white truncate">Chike Opara</span>
-              </div>
-              <ChevronRight className="shrink-0 w-4 h-4 text-gray-500 group-hover:text-gray-300 transition-colors" />
-            </button>
+                <ChevronRight className="shrink-0 w-4 h-4 text-gray-500 group-hover:text-gray-300 transition-colors" />
+              </button>
+            </ProfileDialog>
           </div>
         </div>
       </aside>
